@@ -353,8 +353,9 @@ iptables -A INPUT -p tcp -j DROP
 iptables -A INPUT -p udp -j DROP
 ```
 
-DROP – Firewall akan menolak paket data.
-ACCEPT – Firewall akan mengizinkan paket data.
+DROP – Firewall akan menolak paket data.<br>
+ACCEPT – Firewall akan mengizinkan paket data.<br>
+Setelah memperbarui paket dan menginstal Netcat, terapkan aturan iptables. Aturan pertama mengizinkan koneksi TCP ke port 8080, aturan kedua menolak koneksi TCP yang tidak sesuai, dan aturan ketiga menolak semua koneksi UDP. Dengan cara ini, firewall dibuat untuk membatasi jenis koneksi yang diizinkan masuk ke sistem.
 
 #### No 3
 Pada Revolte & Richter (DHCP server & DNS Server) :
@@ -366,17 +367,20 @@ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 # Limit ICMP connections to 3 per second
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 ```
+Izinkan koneksi yang sudah ESTABLISHED (koneksi yang telah ditetapkan sebelumnya) dan koneksi RELATED (koneksi yang berkaitan dengan koneksi yang sudah ada).<br>
 
+Script tersebut membatasi jumlah paket ICMP yang diterima menjadi 3 per detik. Jika jumlah koneksi ICMP melebihi batas ini, aturan ini akan menolak koneksi tambahan (DROP).
 #### No 4
 Pada Sein & Stark (Web Server) :
 ```shell
 iptables -A INPUT -p tcp --dport 22 -s 192.193.4.3/22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
-
+Scritp akan melakukkan ACCEPT koneksi TCP ke port 22 (SSH) dari alamat IP 192.193.4.3 (GrobeForest) atau dari rentang alamat IP dalam subnet 192.193.4.3/22. Lalu menolak semua koneksi TCP ke port 22 yang tidak sesuai dengan aturan sebelumnya.
 #### No 5
 Pada Sein & Stark (Web Server) :
 ```shell
 # Izinkan akses ke Web Server pada senin-jumat pukul 08:00-16:00
 iptables -A INPUT -p tcp --dport 80 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
 ```
+Menggunakan modul waktu (time) untuk menentukan jangka waktu kapan aturan ini berlaku. Script ini mengizinkan koneksi hanya pada waktu mulai pukul 08:00 dan berakhir pukul 16:00. Selain itu, aturan ini berlaku hanya pada hari Senin hingga Jumat.
