@@ -325,5 +325,58 @@ net.ipv4.ip_forward=1
 service isc-dhcp-relay restart
 
 ```
+### Jawaban 
 
 #### No 1
+Pada Aura :
+
+``` shell
+ETH0_IP=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $ETH0_IP
+```
+penggunaan awk untuk memfilter baris yang mengandung "inet" dan mencetak kolom kedua (alamat IP). Penggunaan cut digunakan untuk memisahkan alamat IP dan mask dari output awk. Hasil akhirnya tetap sama, yaitu mendapatkan alamat IP eth0 dan menerapkan SNAT pada iptables.
+POSTROUTING Digunakan untuk mentranslasi address setelah proses routing. Dilakukan dengan merubah source IP Address dari paket data.
+SNAT (Source NAT), yaitu ketika anda mengubah alamat asal dari paket pertama dengan kata lain anda mengubah dari mana koneksi terjadi.
+
+#### No 2
+Pada Sein & grabeforest :
+
+``` shell
+apt-get update
+apt-get install netcat -y
+
+# Menolak semua koneksi TCP kecuali port 8080
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp -j DROP
+
+# Menolak semua koneksi UDP
+iptables -A INPUT -p udp -j DROP
+```
+
+DROP – Firewall akan menolak paket data.
+ACCEPT – Firewall akan mengizinkan paket data.
+
+#### No 3
+Pada Revolte & Richter (DHCP server & DNS Server) :
+```shell
+# Allow established and related connections
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+
+# Limit ICMP connections to 3 per second
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+
+#### No 4
+Pada Sein & Stark (Web Server) :
+```shell
+iptables -A INPUT -p tcp --dport 22 -s 192.193.4.3/22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j DROP
+```
+
+#### No 5
+Pada Sein & Stark (Web Server) :
+```shell
+# Izinkan akses ke Web Server pada senin-jumat pukul 08:00-16:00
+iptables -A INPUT -p tcp --dport 80 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
+```
