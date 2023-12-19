@@ -16,3 +16,312 @@
 9. Sadar akan adanya potensial saling serang antar kubu politik, maka WebServer harus dapat secara otomatis memblokir  alamat IP yang melakukan scanning port dalam jumlah banyak (maksimal 20 scan port) di dalam selang waktu 10 menit. 
 (clue: test dengan nmap)
 10. Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level. 
+
+## TOPOLOGI
+### GNS3
+![Alt text](./source/image-1.png)
+### Pembagian IP
+![Alt text](./source/image.png)
+
+### Subnetting & Routing
+Aura
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+	address 192.193.0.5
+	netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+	address 192.193.0.1
+	netmask 255.255.255.252
+up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.193.0.0/20
+```
+Heiter
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.0.2
+	netmask 255.255.255.252
+	gateway 192.193.0.1
+	up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+auto eth1
+iface eth1 inet static
+	address 192.193.4.1
+	netmask 255.255.252.0
+
+auto eth2
+iface eth2 inet static
+	address 192.193.8.1
+	netmask 255.255.248.0
+```
+
+TukrHostRegion
+```
+auto eth0
+iface eth0 inet dhcp
+hwaddress ether c2:b2:ca:6d:68:68
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+Sein
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.4.2
+	netmask 255.255.252.0
+	gateway 192.193.4.1
+	up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+GrobeForest
+```
+auto eth0
+iface eth0 inet dhcp
+hwaddress ether 2e:87:72:ba:40:39
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+Frieren
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.0.6
+	netmask 255.255.255.252
+	gateway 192.193.0.5
+	up echo nameserver 192.162.122.1 > /etc/resolv.conf
+
+auto eth1
+iface eth1 inet static
+	address 192.193.0.13
+	netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+	address 192.193.0.9
+	netmask 255.255.255.252
+```
+Stark
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.0.10
+	netmask 255.255.255.252
+	gateway 192.193.0.9
+	up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+Himmel
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.0.14
+	netmask 255.255.255.252
+	gateway 192.193.0.13
+	up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+auto eth1
+iface eth1 inet static
+	address 192.193.2.1
+	netmask 255.255.254.0
+
+auto eth2
+iface eth2 inet static
+	address 192.193.0.129
+	netmask 255.255.255.128
+```
+
+LaubHills
+```
+auto eth0
+iface eth0 inet dhcp
+hwaddress ether 2a:a2:ac:db:93:38
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+SchwerMountain
+```
+auto eth0
+iface eth0 inet dhcp
+hwaddress ether a6:7f:8c:62:99:3c
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+Fern
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.0.130
+	netmask 255.255.255.128
+	gateway 192.193.0.129
+	up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+auto eth1
+iface eth1 inet static
+	address 192.193.0.17
+	netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+	address 192.193.0.21
+	netmask 255.255.255.252
+```
+
+Richter
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.0.18
+	netmask 255.255.255.252
+	gateway 192.193.0.17
+	up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+Revolte
+```
+auto eth0
+iface eth0 inet static
+	address 192.193.0.22
+	netmask 255.255.255.252
+	gateway 192.193.0.21
+	up echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+### ROUTING
+
+AURA
+```
+#Kiri
+route add -net 192.193.8.0 netmask 255.255.248.0 gw 192.193.0.2 #A2
+route add -net 192.193.4.0 netmask 255.255.252.0 gw 192.193.0.2 #A3
+
+#Bawah
+route add -net 192.193.0.8 netmask 255.255.255.252 gw 192.193.0.6 #A5
+route add -net 192.193.0.12 netmask 255.255.255.252 gw 192.193.0.6 #A6
+route add -net 192.193.2.0 netmask 255.255.254.0 gw 192.193.0.6 #A7
+route add -net 192.193.0.128 netmask 255.255.255.128 gw 192.193.0.6 #A8
+route add -net 192.193.0.16 netmask 255.255.255.252 gw 192.193.0.6 #A9
+route add -net 192.193.0.20 netmask 255.255.255.252 gw 192.193.0.6 #A10
+```
+FRIEREN
+```
+route add -net 192.193.2.0 netmask 255.255.254.0 gw 192.193.0.14 #A7
+route add -net 192.193.0.128 netmask 255.255.255.128 gw 192.193.0.14 #A8
+route add -net 192.193.0.16 netmask 255.255.255.252 gw 192.193.0.14 #A9
+route add -net 192.193.0.20 netmask 255.255.255.252 gw 192.193.0.14 #A10
+```
+HIMMEL
+```
+route add -net 192.193.0.16 netmask 255.255.255.252 gw 192.193.0.130 #A9
+route add -net 192.193.0.20 netmask 255.255.255.252 gw 192.193.0.130 #A10
+```
+
+### DHCP
+
+#### Script Revolte (DHCP SERVER)
+
+```
+apt-get update
+apt-get install isc-dhcp-server -y
+
+echo '
+INTERFACESv4="eth0" #koneksi ke DHCP Relay
+' > /etc/default/isc-dhcp-server
+
+echo '
+subnet 192.193.0.0 netmask 255.255.255.252 {
+        option routers 192.193.0.1;
+        option broadcast-address 192.193.0.3;
+}
+
+subnet 192.193.8.0 netmask 255.255.248.0 {
+        option routers 192.193.8.1;
+        option broadcast-address 192.193.15.255;
+}
+
+subnet 192.193.4.0 netmask 255.255.252.0 {
+           option routers 192.193.4.1;
+        option broadcast-address 192.193.7.255;
+}
+
+subnet 192.193.0.4 netmask 255.255.255.252 {
+        option routers 192.193.0.5;
+        option broadcast-address 192.193.0.7;
+}
+
+subnet 192.193.0.8 netmask 255.255.255.252 {
+        option routers 192.193.0.9;
+        option broadcast-address 192.193.0.11;
+}
+
+subnet 192.193.0.12 netmask 255.255.255.252 {
+        option routers 192.193.0.13;
+        option broadcast-address 192.193.0.15;
+}
+
+subnet 192.193.2.0 netmask 255.255.254.0 {
+        option routers 192.193.2.1;
+        option broadcast-address 192.193.3.255;
+}
+
+subnet 192.193.0.128 netmask 255.255.252.128 {
+        option routers 192.193.0.129;
+        option broadcast-address 192.193.0.255;
+}
+
+subnet 192.193.0.16 netmask 255.255.255.252 {
+        option routers 192.193.0.17;
+        option broadcast-address 192.193.0.19;
+}
+
+subnet 192.193.0.20 netmask 255.255.255.252 {
+        option routers 192.193.0.21;
+        option broadcast-address 192.193.0.23;
+}
+
+host schewrchmountain {
+    hardware ethernet a6:7f:8c:62:99:3c;
+    fixed-address 192.193.0.131;
+}
+
+host laubhils {
+        hardware ethernet 2a:a2:ac:db:93:38;
+        fixed-address 192.193.2.2;
+}
+
+host Turkregion {
+        hardware ethernet c2:b2:ca:6d:68:68;
+        fixed-address 192.193.8.2;
+}
+
+host grobeforest {
+        hardware ethernet 2e:87:72:ba:40:39;
+        fixed-address 192.193.4.3;
+}
+
+' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server start
+```
+
+#### Script DHCP relay
+```
+apt-get update
+apt-get install isc-dhcp-relay -y
+service isc-dhcp-relay start
+
+echo '
+SERVERS="192.193.0.22"
+INTERFACES="eth0 eth1 eth2"
+OPTIONS=""
+' > /etc/default/isc-dhcp-relay
+
+echo '
+net.ipv4.ip_forward=1
+' > /etc/sysctl.conf
+
+service isc-dhcp-relay restart
+
+```
