@@ -20,6 +20,9 @@
 ## TOPOLOGI
 ### GNS3
 ![Alt text](./source/image-1.png)
+### VLSM Tree
+![Alt text](./source/image-2.png)
+link miro : https://miro.com/app/board/uXjVNDovG8w=/
 ### Pembagian IP
 ![Alt text](./source/image.png)
 
