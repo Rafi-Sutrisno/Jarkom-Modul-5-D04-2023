@@ -340,6 +340,7 @@ SNAT (Source NAT), yaitu ketika anda mengubah alamat asal dari paket pertama den
 
 <img width="488" alt="nomor1" src="https://github.com/Rafi-Sutrisno/Jarkom-Modul-5-D04-2023/assets/88009253/b568af71-b93f-43de-9528-1f0aeb0497eb">
 
+
 #### No 2
 Pada Sein & grabeforest :
 
