@@ -339,6 +339,7 @@ POSTROUTING Digunakan untuk mentranslasi address setelah proses routing. Dilakuk
 SNAT (Source NAT), yaitu ketika anda mengubah alamat asal dari paket pertama dengan kata lain anda mengubah dari mana koneksi terjadi.
 
 <img width="488" alt="nomor1" src="https://github.com/Rafi-Sutrisno/Jarkom-Modul-5-D04-2023/assets/88009253/b568af71-b93f-43de-9528-1f0aeb0497eb">
+
 #### No 2
 Pada Sein & grabeforest :
 
@@ -360,6 +361,7 @@ Setelah memperbarui paket dan menginstal Netcat, terapkan aturan iptables. Atura
 <img width="121" alt="no2 sein" src="https://github.com/Rafi-Sutrisno/Jarkom-Modul-5-D04-2023/assets/88009253/62c4833d-cb30-4ec9-af2d-d215a956127f">
 
 <img width="178" alt="no2 client" src="https://github.com/Rafi-Sutrisno/Jarkom-Modul-5-D04-2023/assets/88009253/1ddf3c36-5130-4d4d-9347-ebfd13223778">
+
 #### No 3
 Pada Revolte & Richter (DHCP server & DNS Server) :
 
@@ -422,6 +424,7 @@ nmap 192.193.4.2 22
 <img width="289" alt="no6 open" src="https://github.com/Rafi-Sutrisno/Jarkom-Modul-5-D04-2023/assets/88009253/121def4f-d605-41c1-8787-a060bb42473f">
 
 <img width="289" alt="no6 filtered" src="https://github.com/Rafi-Sutrisno/Jarkom-Modul-5-D04-2023/assets/88009253/22bc02ca-985d-45a3-b521-141d5df62abd">
+
 #### No 7
 Pada Heiter :
 
