@@ -499,6 +499,14 @@ pada semua node kecuali client
 ```
 iptables -A INPUT  -j LOG --log-level debug --log-prefix 'Dropped Packet' -m limit --limit 1/second --limit-burst 10
 ```
+-j LOG: Ini menunjukkan bahwa jika paket memenuhi kriteria yang ditetapkan, mereka akan di-log. Artinya, informasi tentang paket tersebut akan dicatat dalam log sistem.
+
+--log-level debug: Ini menentukan level log untuk pesan log yang akan dihasilkan. Di sini, level debug dipilih, yang berarti pesan log akan mencakup informasi detail untuk debugging.
+
+--log-prefix 'Dropped Packet': Ini menetapkan awalan (prefix) untuk pesan log. Dalam hal ini, pesan log akan dimulai dengan teks "Dropped Packet".
+
+-m limit --limit 1/second --limit-burst 10: Bagian ini menggunakan modul "limit" untuk mengatur batasan jumlah pesan log yang akan dihasilkan. Dalam hal ini, pesan log akan dihasilkan tidak lebih dari 1 pesan per detik, dan batas pemancaran (burst limit) adalah 10 pesan. Ini membantu menghindari pembanjiran log jika ada serangan atau aktivitas yang tidak diinginkan
+
 testing pada sein
 ```
 iptables -L
